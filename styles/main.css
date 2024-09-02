@@ -67,6 +67,8 @@ h6 {
   --button-gradient: linear-gradient(hsl(0, 100%, 58%), hsl(0, 68%, 32%));
   --border-color: hsla(0, 59%, 48%, 0.5);
   --highlight: hsla(0, 100%, 50%, 0.25);
+  --highlight-2: hsla(0, 100%, 50%, 0.05);
+
 
   /* ### Light Theme */
 
@@ -195,6 +197,10 @@ li {
   border-bottom: 1px solid var(--border-color);
   padding-inline: 1rem;
   position: relative;
+
+  &:hover {
+    background-color: var(--highlight-2);
+  }
 }
 
 input[type="checkbox"] {
