@@ -1,0 +1,395 @@
+/* css reset start */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+}
+
+body {
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+
+  &::placeholder {
+    opacity: 1;
+  }
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+#root,
+#__next {
+  isolation: isolate;
+}
+
+/* css reset end */
+
+/* custom properties start */
+:root {
+  color-scheme: light dark;
+
+  --bright: hsl(0, 98%, 61%);
+  --primary: hsl(0, 74.1%, 53.1%);
+  --button-gradient: linear-gradient(hsl(0, 100%, 58%), hsl(0, 68%, 32%));
+  --border-color: hsla(0, 59%, 48%, 0.5);
+  --highlight: hsla(0, 100%, 50%, 0.25);
+
+  /* ### Light Theme */
+
+  --light-1: hsl(0, 0%, 98%);
+  --light-2: hsl(0, 0%, 96%);
+  --light-3: hsl(0, 11%, 84%);
+  --light--hover: hsl(0, 3%, 12%);
+  --light-4: hsl(0, 0%, 38%);
+
+  /* ### Dark Theme */
+
+  --dark-1: hsl(0, 0%, 2%);
+  --dark-2: hsl(0, 0%, 6%);
+  --dark-3: hsl(0, 39%, 85%);
+  --dark--hover: hsl(0, 32%, 92%);
+  --dark-4: hsl(0, 0%, 49%);
+}
+
+/* Override for light theme */
+:root.light-theme {
+  color-scheme: light;
+}
+
+/* Override for dark theme */
+:root.dark-theme {
+  color-scheme: dark;
+}
+
+/* custom properties end */
+
+::selection {
+  background-color: var(--highlight);
+}
+
+h1 {
+  text-transform: uppercase;
+  letter-spacing: 1rem;
+  color: var(--light-1);
+}
+
+html {
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 18px;
+  background-color: light-dark(var(--light-1), var(--dark-1));
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header-img-container {
+  display: flex;
+  position: fixed;
+  overflow: hidden;
+  height: 300px;
+  max-width: 100%;
+  z-index: -1;
+}
+
+.header-img {
+  background: url(../images/background.png) no-repeat center top;
+  background-size: cover;
+  width: 100dvw;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 150px;
+  width: 95%;
+  max-width: 600px;
+}
+
+.theme-switch {
+  display: flex;
+  align-items: center;
+
+  button {
+    background: unset;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease-out;
+
+    &:hover {
+      transform: rotate(20deg) scale(110%);
+    }
+  }
+}
+
+main {
+  width: 95%;
+  max-width: 600px;
+}
+
+input[type="text"],
+li {
+  display: flex;
+  width: 100%;
+  min-height: 75px;
+  max-height: fit-content;
+  border: unset;
+  list-style: none;
+  background-color: unset;
+  align-items: center;
+  outline: none;
+  cursor: pointer;
+  transition: box-shadow 1s;
+  overflow-x: hidden;
+  padding-block: 10px;
+}
+
+input[type="text"]:focus,
+input[type="text"]:hover {
+  border: unset;
+  box-shadow: inset -0.75rem 0rem 2rem -1rem var(--border-color);
+}
+
+ul {
+  padding-left: 0;
+}
+
+li {
+  border-bottom: 1px solid var(--border-color);
+  padding-inline: 1rem;
+  position: relative;
+}
+
+input[type="checkbox"] {
+  padding-inline-start: 1rem;
+  padding: 1rem;
+  cursor: pointer;
+  height: 1rem;
+  aspect-ratio: 1;
+  accent-color: var(--bright);
+  position: absolute;
+  opacity: 0;
+}
+
+.todo-checkbox {
+  cursor: pointer;
+}
+
+.custom-checkbox {
+  display: inline-block;
+  position: relative;
+  min-width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--dark-4);
+}
+
+.custom-checkbox:hover {
+  border: 2px solid var(--dark-3);
+}
+
+input[type="checkbox"]:checked ~ .custom-checkbox {
+  background: var(--button-gradient);
+  border: unset;
+}
+
+.custom-checkbox:hover,
+li:focus-within .custom-checkbox,
+li:focus-within input[type="checkbox"]:checked ~ .custom-checkbox {
+  border: 2px solid var(--dark-3);
+}
+
+.check-icon {
+  position: absolute;
+  left: 24px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 4;
+  border: unset;
+  pointer-events: none;
+}
+
+input[type="checkbox"]:checked ~ .check-icon {
+  opacity: 1;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  height: inherit;
+  padding-inline: 1rem;
+  padding-block: 1rem;
+  cursor: pointer;
+  width: 100%;
+}
+
+.add-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-block-end: 25px;
+  background-color: light-dark(var(--light-2), var(--dark-2));
+  border-radius: 4px;
+  box-shadow: 0 2rem 2rem 0rem rgba(0, 0, 0, 0.25);
+
+  &::before {
+    content: "";
+    margin-inline: 1rem;
+    display: inline-block;
+    position: relative;
+    min-width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--dark-4);
+  }
+}
+
+.completed {
+  text-decoration: line-through;
+  color: var(--primary);
+}
+
+.completed,
+.uncompleted {
+  cursor: pointer;
+}
+
+.cross {
+  display: none;
+  height: 25px;
+  transition: transform 0.2s ease-out;
+
+  &:hover {
+    transform: rotate(90deg) scale(110%);
+  }
+}
+
+.completed:hover > .cross,
+.uncompleted:hover > .cross {
+  display: flex;
+  justify-self: end;
+}
+
+.todo-app {
+  background-color: light-dark(var(--light-2), var(--dark-2));
+  border-radius: 4px;
+  margin-bottom: 50px;
+  box-shadow: 0 2rem 2rem 0rem rgba(0, 0, 0, 0.25);
+}
+
+#list {
+  transition: all 0.5s;
+  label {
+    width: calc(100% - 2.8rem);
+    align-content: center;
+  }
+}
+
+.empty-list {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding-block: 25px;
+  text-align: center;
+}
+
+.show {
+  display: flex;
+}
+
+.app-details {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding-block: 0.8rem;
+  color: light-dark(var(--light-4), var(--dark-4));
+  padding-inline: 1rem;
+
+  .toggle-items {
+    a {
+      padding-inline: 0.5rem;
+    }
+    a.active {
+      color: var(--bright);
+    }
+  }
+
+  a {
+    font-style: normal;
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+      color: light-dark(var(--light--hover), var(--dark--hover));
+    }
+
+    &:focus-visible,
+    &:active,
+    &:target {
+      color: var(--bright);
+    }
+  }
+}
+p.reorder {
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  width: fit-content;
+  margin: auto;
+  padding-inline: 20px;
+  border-radius: 4px;
+  color: var(--primary);
+}
+
+@media screen and (max-width: 500px) {
+  .app-details {
+    flex-direction: column;
+    align-items: center;
+    padding-block: 1.5rem;
+
+    .toggle-items {
+      a {
+        display: inline-flex;
+        margin-block: 1rem;
+      }
+    }
+  }
+}

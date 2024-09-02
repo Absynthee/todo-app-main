@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <title>Frontend Mentor | Todo app</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="styles/main.css">
+  <script src="styles/styles.js" defer></script>
+
+</head>
+
+<body>
+  <div class="header-img-container">
+    <div class="header-img"></div>
+  </div>
+
+  <header>
+    <h1>Todo</h1>
+    <div class="theme-switch">
+      <button id="theme-toggle">
+        <img id="theme-icon" src="images/icon-sun.svg" alt="Theme Icon">
+      </button>
+
+    </div>
+
+
+  </header>
+
+  <main>
+    <div class="add-item">
+      <label for="new-item-input" style="display: none;">Add New Item</label>
+      <input type="text" id="new-item-input" placeholder="Add new item...">
+    </div>
+    <div class="todo-app">
+      <ul id="list">
+        <!-- Existing list items go here -->
+        <div class="empty-list">
+          You have no uncompleted tasks! 🥳
+        </div>
+        <li draggable="true" class="completed">
+          <input type="checkbox" class="todo-checkbox" name="" id="complete" />
+          <span class="custom-checkbox"></span>
+          <img src="images/icon-check.svg" alt="Check Icon" class="check-icon" />
+          <label for="complete">Complete online JavaScript course</label>
+          <img class="cross" src="images/cross.svg" alt="Remove List Item">
+        </li>
+        <li draggable="true" class="uncompleted">
+          <input type="checkbox" class="todo-checkbox" name="" id="jog" tabindex="0" />
+          <span class="custom-checkbox"></span>
+          <img src="images/icon-check.svg" alt="Check Icon" class="check-icon" />
+          <label for="jog">Jog around the park 3x</label>
+          <img class="cross" src="images/cross.svg" alt="Remove List Item">
+        </li>
+        <li draggable="true" class="uncompleted">
+          <input type="checkbox" class="todo-checkbox" name="" id="meditate" />
+          <span class="custom-checkbox"></span>
+          <img src="images/icon-check.svg" alt="Check Icon" class="check-icon" />
+          <label for="meditate">10 minutes meditation</label>
+          <img class="cross" src="images/cross.svg" alt="Remove List Item">
+        </li>
+        <li draggable="true" class="uncompleted">
+          <input type="checkbox" class="todo-checkbox" name="" id="read" />
+          <span class="custom-checkbox"></span>
+          <img src="images/icon-check.svg" alt="Check Icon" class="check-icon" />
+          <label for="read">Read for 1 hour</label>
+          <img class="cross" src="images/cross.svg" alt="Remove List Item">
+        </li>
+        <li draggable="true" class="uncompleted">
+          <input type="checkbox" class="todo-checkbox" name="" id="groceries" />
+          <span class="custom-checkbox"></span>
+          <img src="images/icon-check.svg" alt="Check Icon" class="check-icon" />
+          <label for="groceries">Pick up groceries</label>
+          <img class="cross" src="images/cross.svg" alt="Remove List Item">
+        </li>
+        <li draggable="true" class="uncompleted">
+          <input type="checkbox" class="todo-checkbox" name="" id="todoapp" />
+          <span class="custom-checkbox"></span>
+          <img src="images/icon-check.svg" alt="Check Icon" class="check-icon" />
+          <label for="todoapp">Complete Todo App on Frontend Mentor</label>
+          <img class="cross" src="images/cross.svg" alt="Remove List Item">
+        </li>
+
+      </ul>
+      <div class="app-details">
+        <div class="items-left"></div>
+        <div class="toggle-items">
+          <a href="#" id="show-all">All</a>
+          <a href="#" id="show-active">Active</a>
+          <a href="#" id="show-completed">Completed</a>
+        </div>
+        <div class="clear-items"><a href="#" id="clear-completed">Clear Completed</a></div>
+      </div>
+    </div>
+    <p class="reorder">Drag and drop to reorder list</p>
+  </main>
+
+</body>
+
+</html>
