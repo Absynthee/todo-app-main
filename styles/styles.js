@@ -61,7 +61,7 @@ themeToggle.addEventListener("click", () => {
 
 function updateThemeIcon(theme) {
   const iconPath =
-    theme === "dark" ? "../images/icon-moon.svg" : "../images/icon-sun.svg";
+    theme === "dark" ? "./images/icon-moon.svg" : "./images/icon-sun.svg";
   themeIcon.src = iconPath;
 }
 
@@ -167,7 +167,7 @@ function createNewItem(text) {
   customCheckbox.classList.add("custom-checkbox");
 
   const checkIcon = document.createElement("img");
-  checkIcon.src = "../images/icon-check.svg";
+  checkIcon.src = "./images/icon-check.svg";
   checkIcon.alt = "Check Icon";
   checkIcon.classList.add("check-icon");
 
@@ -176,7 +176,7 @@ function createNewItem(text) {
   label.htmlFor = uniqueId;
 
   const removeIcon = document.createElement("img");
-  removeIcon.src = "../images/cross.svg";
+  removeIcon.src = "./images/cross.svg";
   removeIcon.alt = "Remove List Item";
   removeIcon.classList.add("cross");
 
