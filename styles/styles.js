@@ -183,15 +183,51 @@ function loadListItems() {
 
 // Remove Completed Items
 function removeCompletedItems() {
-  // Remove all completed items from the list
   const completedItems = list.querySelectorAll(".completed");
+  const confettiContainers = [];
+
+  // Add the fade-out animation to each completed item
   completedItems.forEach((item) => {
-    item.remove();
+    item.classList.add("fade-out");
+
+    const listItemRect = item.getBoundingClientRect();
+    const confettiContainer = document.createElement("div");
+    confettiContainer.classList.add("confetti-container");
+    confettiContainer.style.position = "absolute";
+    confettiContainer.style.left = `${listItemRect.left}px`;
+    confettiContainer.style.top = `${listItemRect.top}px`;
+    confettiContainer.style.width = `${listItemRect.width}px`;
+    confettiContainer.style.height = `${listItemRect.height}px`;
+    document.body.appendChild(confettiContainer);
+    confettiContainers.push(confettiContainer);
+
+    for (let i = 0; i < 5; i++) { // Adjust the number of confetti pieces
+      const confetti = document.createElement("div");
+      confetti.classList.add("confetti");
+      confetti.style.left = `${Math.random() * listItemRect.width}px`;
+      confetti.style.top = `0px`;
+      const randomRotation = Math.floor(Math.random() * 360); // Random rotation between 0 and 359 degrees
+      confetti.style.transform = `rotate(${randomRotation}deg)`;
+      confettiContainer.appendChild(confetti);
+    }
   });
-  updateItemsLeftCount();
-  saveStates();
-  saveListItems(); // Save the updated list items
+
+  // Remove the completed items and confetti after the animation completes
+  setTimeout(() => {
+    completedItems.forEach((item) => {
+      item.remove();
+    });
+
+    confettiContainers.forEach((container) => {
+      container.remove();
+    });
+
+    updateItemsLeftCount();
+    saveStates();
+    saveListItems();
+  }, 1000); // 1000ms = 1 second
 }
+
 
 // Toggle Empty List Element
 function toggleEmptyList() {
@@ -346,10 +382,35 @@ listContainer.addEventListener("click", (event) => {
   if (target.classList.contains("cross")) {
     const listItem = target.closest("li");
     if (listItem) {
-      listItem.remove();
-      updateItemsLeftCount();
-      saveListItems();
-      toggleEmptyList(); // Call toggleEmptyList when a list item is removed
+      const listItemRect = listItem.getBoundingClientRect();
+      const confettiContainer = document.createElement("div");
+      confettiContainer.classList.add("confetti-container");
+      confettiContainer.style.position = "absolute";
+      confettiContainer.style.left = `${listItemRect.left}px`;
+      confettiContainer.style.top = `${listItemRect.top}px`;
+      confettiContainer.style.width = `${listItemRect.width}px`;
+      confettiContainer.style.height = `${listItemRect.height}px`;
+      document.body.appendChild(confettiContainer);
+
+      for (let i = 0; i < 5; i++) { // Adjust the number of confetti pieces
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        confetti.style.left = `${Math.random() * listItemRect.width}px`;
+        confetti.style.top = `0px`;
+        const randomRotation = Math.floor(Math.random() * 360); // Random rotation between 0 and 359 degrees
+        confetti.style.transform = `rotate(${randomRotation}deg)`;
+        confettiContainer.appendChild(confetti);
+      }
+
+      listItem.classList.add("fade-out"); // Add the fade-out class
+
+      // Remove the list item and confetti after the animation completes
+      setTimeout(() => {
+        listItem.remove();
+        confettiContainer.remove();
+        updateItemsLeftCount();
+        saveListItems();
+      }, 1000); // 1000ms = 1 second
     }
   }
 });

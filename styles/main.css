@@ -113,6 +113,7 @@ html {
   font-family: "Josefin Sans", sans-serif;
   font-size: 18px;
   background-color: light-dark(var(--light-1), var(--dark-1));
+  transition: all 0.5;
 }
 
 body {
@@ -384,6 +385,49 @@ p.reorder {
   border-radius: 4px;
   color: var(--primary);
 }
+
+.fade-out {
+  animation: fadeOut 1s forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.confetti {
+  position: absolute;
+  background-color: transparent;
+  animation: confetti 1s linear forwards;
+  opacity: 1;
+}
+
+.confetti::before {
+  content: "🥳";
+  display: block;
+  width: 2px;
+  height: 2px;
+  transform-origin: center center;
+}
+
+@keyframes confetti {
+  0% {
+    transform: translateY(50px) rotate(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(200px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+
+
+
 
 @media screen and (max-width: 500px) {
   .app-details {
