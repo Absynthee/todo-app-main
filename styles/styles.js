@@ -1,23 +1,22 @@
 // Make list items draggable
-
 const list = document.getElementById("list");
 const items = document.querySelectorAll("#list li");
 let draggedItem = null;
 
-for (let item of items) {
-  item.addEventListener("dragstart", dragStart);
-  item.addEventListener("dragover", dragOver);
-  item.addEventListener("drop", drop);
-  item.addEventListener("dragend", dragEnd);
-}
+// Drag and Drop Functions
 function dragStart(e) {
+  // Store the dragged item and set the data transfer data
   draggedItem = e.target;
   e.dataTransfer.setData("text/plain", null);
 }
+
 function dragOver(e) {
+  // Prevent the default behavior to allow drop
   e.preventDefault();
 }
+
 function drop(e) {
+  // Prevent the default behavior and handle the drop event
   e.preventDefault();
   const target = e.target.closest("li");
   if (target && target !== draggedItem) {
@@ -29,61 +28,38 @@ function drop(e) {
     parent.insertBefore(draggedItem, nextSibling);
   }
 }
+
 function dragEnd(e) {
+  // Reset the dragged item
   draggedItem = null;
 }
 
-// Toggle theme between light & dark
+for (let item of items) {
+  item.addEventListener("dragstart", dragStart);
+  item.addEventListener("dragover", dragOver);
+  item.addEventListener("drop", drop);
+  item.addEventListener("dragend", dragEnd);
+}
 
-const themeToggle = document.getElementById("theme-toggle");
-const themeIcon = document.getElementById("theme-icon");
-const htmlElement = document.documentElement;
-
-// Load the user's preferred theme from localStorage
-const preferredTheme = localStorage.getItem("theme") || "light";
-htmlElement.classList.add(
-  preferredTheme === "dark" ? "dark-theme" : "light-theme"
-);
-updateThemeIcon(preferredTheme);
-
-themeToggle.addEventListener("click", () => {
-  htmlElement.classList.toggle("light-theme");
-  htmlElement.classList.toggle("dark-theme");
-
-  // Save the new theme preference in localStorage
-  const newTheme = htmlElement.classList.contains("dark-theme")
-    ? "dark"
-    : "light";
-  localStorage.setItem("theme", newTheme);
-
-  updateThemeIcon(newTheme);
-});
-
+// Helper Function
 function updateThemeIcon(theme) {
+  // Update the theme icon based on the current theme
   const iconPath =
     theme === "dark" ? "./images/icon-moon.svg" : "./images/icon-sun.svg";
   themeIcon.src = iconPath;
 }
 
-// count number of items left to do
-
-// Get the .items-left element
-const itemsLeftElement = document.querySelector(".items-left");
-
-// Function to update the items left count
+// Helper Function
 function updateItemsLeftCount() {
-  // Get all elements with the class 'uncompleted' inside the list
+  // Update the count of uncompleted items
   const uncompletedItems = list.querySelectorAll(".uncompleted");
-
-  // Get the count of uncompleted items
   const uncompletedItemsCount = uncompletedItems.length;
-
-  // Update the text content of the .items-left element
   itemsLeftElement.textContent = `${uncompletedItemsCount} items left`;
 }
 
-// Function to save the checkbox and class states to localStorage
+// Save and Load Checkbox and Class States
 function saveStates() {
+  // Save the checkbox and class states to localStorage
   const checkboxes = list.querySelectorAll('input[type="checkbox"]');
   const states = {};
 
@@ -98,10 +74,9 @@ function saveStates() {
   localStorage.setItem("states", JSON.stringify(states));
 }
 
-// Function to load the checkbox and class states from localStorage
 function loadStates() {
+  // Load the checkbox and class states from localStorage
   const states = JSON.parse(localStorage.getItem("states")) || {};
-
   const checkboxes = list.querySelectorAll('input[type="checkbox"]');
 
   checkboxes.forEach((checkbox) => {
@@ -114,44 +89,15 @@ function loadStates() {
   });
 }
 
-// Call the loadStates function initially
-loadStates();
-
-// Call the updateItemsLeftCount function initially
-updateItemsLeftCount();
-
-// Add an event listener to the list element
-list.addEventListener("click", (event) => {
-  const target = event.target;
-
-  // Check if the clicked element is a checkbox
-  if (target.type === "checkbox") {
-    // Get the parent <li> element
-    const listItem = target.closest("li");
-
-    // Toggle the 'uncompleted' and 'completed' classes based on the checkbox state
-    listItem.classList.toggle("uncompleted");
-    listItem.classList.toggle("completed");
-
-    // Update the items left count after the checkbox state changes
-    updateItemsLeftCount();
-
-    // Save the checkbox and class states to localStorage
-    saveStates();
-  }
-});
-
-// Add new items to list
-
-const newItemInput = document.getElementById("new-item-input");
-
-// generate a unique ID for new items
+// Helper Function
 function generateUniqueId() {
+  // Generate a unique ID for new list items
   return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
 }
 
-// create a new list item and all all info
+// Create a New List Item
 function createNewItem(text) {
+  // Create a new list item with the provided text
   const listItem = document.createElement("li");
   listItem.classList.add("uncompleted");
   listItem.draggable = true;
@@ -193,66 +139,72 @@ function createNewItem(text) {
   return listItem;
 }
 
-// Add an event listener to the input field
-newItemInput.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    const newItemText = newItemInput.value.trim();
-    if (newItemText) {
-      const newItem = createNewItem(newItemText);
-      list.appendChild(newItem);
-      newItemInput.value = "";
-      updateItemsLeftCount();
-      saveStates();
+// Save and Load List Items
+function saveListItems() {
+  // Save the list items to localStorage
+  const listItems = Array.from(list.querySelectorAll('li')).map(item => {
+    const checkbox = item.querySelector('input[type="checkbox"]');
+    const label = item.querySelector('label');
+    return {
+      text: label.textContent,
+      checked: checkbox.checked,
+      completed: item.classList.contains('completed')
+    };
+  });
+
+  localStorage.setItem('listItems', JSON.stringify(listItems));
+}
+
+function loadListItems() {
+  // Load the list items from localStorage
+  const listItems = JSON.parse(localStorage.getItem('listItems')) || [];
+
+  list.innerHTML = '';
+
+  listItems.forEach(item => {
+    const newItem = createNewItem(item.text);
+    const checkbox = newItem.querySelector('input[type="checkbox"]');
+    const listItem = checkbox.closest('li');
+
+    checkbox.checked = item.checked;
+    if (item.completed) {
+      listItem.classList.remove('uncompleted');
+      listItem.classList.add('completed');
+    } else {
+      listItem.classList.remove('completed');
+      listItem.classList.add('uncompleted');
     }
-  }
-});
 
-// Clear completed items
+    list.appendChild(newItem);
+  });
 
-const clearCompletedLink = document.getElementById("clear-completed");
+  updateItemsLeftCount();
+}
 
+// Remove Completed Items
 function removeCompletedItems() {
+  // Remove all completed items from the list
   const completedItems = list.querySelectorAll(".completed");
   completedItems.forEach((item) => {
     item.remove();
   });
   updateItemsLeftCount();
   saveStates();
+  saveListItems(); // Save the updated list items
 }
 
-clearCompletedLink.addEventListener("click", (event) => {
-  event.preventDefault();
-  removeCompletedItems();
-});
-
-// Show or hide the empty list element based on the number of uncompleted items
-
-const listItems = list.querySelectorAll("li");
-const emptyListElement = document.querySelector(".empty-list");
-
+// Toggle Empty List Element
 function toggleEmptyList() {
+  // Show or hide the empty list element based on the number of uncompleted items
   const uncompletedItems = list.querySelectorAll(".uncompleted");
   const hasUncompletedItems = uncompletedItems.length > 0;
 
   emptyListElement.style.display = hasUncompletedItems ? "none" : "flex";
 }
 
-toggleEmptyList();
-
-list.addEventListener("click", (event) => {
-  const target = event.target;
-  if (target.type === "checkbox") {
-    toggleEmptyList();
-  }
-});
-
-// Get the toggle links
-const showAllLink = document.getElementById("show-all");
-const showActiveLink = document.getElementById("show-active");
-const showCompletedLink = document.getElementById("show-completed");
-
-// filter and display list items
+// Filter and Display List Items
 function filterListItems(filter) {
+  // Filter and display list items based on the provided filter
   const listItems = list.querySelectorAll("li");
 
   showAllLink.classList.remove("active");
@@ -288,17 +240,96 @@ function filterListItems(filter) {
   });
 }
 
-// Add event listeners to the toggle links
+// Toggle theme between light & dark
+const themeToggle = document.getElementById("theme-toggle");
+const themeIcon = document.getElementById("theme-icon");
+const htmlElement = document.documentElement;
+
+const preferredTheme = localStorage.getItem("theme") || "light";
+htmlElement.classList.add(
+  preferredTheme === "dark" ? "dark-theme" : "light-theme"
+);
+updateThemeIcon(preferredTheme);
+
+themeToggle.addEventListener("click", () => {
+  htmlElement.classList.toggle("light-theme");
+  htmlElement.classList.toggle("dark-theme");
+
+  const newTheme = htmlElement.classList.contains("dark-theme")
+    ? "dark"
+    : "light";
+  localStorage.setItem("theme", newTheme);
+
+  updateThemeIcon(newTheme);
+});
+
+const itemsLeftElement = document.querySelector(".items-left");
+
+loadStates();
+updateItemsLeftCount();
+
+const newItemInput = document.getElementById("new-item-input");
+
+// Add a New Item
+newItemInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    const newItemText = newItemInput.value.trim();
+    if (newItemText) {
+      const newItem = createNewItem(newItemText);
+      list.appendChild(newItem);
+      newItemInput.value = "";
+      updateItemsLeftCount();
+      saveStates();
+      saveListItems();
+    }
+  }
+});
+
+const clearCompletedLink = document.getElementById("clear-completed");
+
+// Clear Completed Items
+clearCompletedLink.addEventListener("click", (event) => {
+  event.preventDefault();
+  removeCompletedItems();
+});
+
+const listItems = list.querySelectorAll("li");
+const emptyListElement = document.querySelector(".empty-list");
+
+toggleEmptyList();
+
+// Toggle Completion State
+list.addEventListener("click", (event) => {
+  const target = event.target;
+
+  if (target.type === "checkbox") {
+    const listItem = target.closest("li");
+    listItem.classList.toggle("uncompleted");
+    listItem.classList.toggle("completed");
+    updateItemsLeftCount();
+    saveStates();
+    saveListItems(); 
+    toggleEmptyList();
+  }
+});
+
+const showAllLink = document.getElementById("show-all");
+const showActiveLink = document.getElementById("show-active");
+const showCompletedLink = document.getElementById("show-completed");
+
+// Show All Items
 showAllLink.addEventListener("click", (event) => {
   event.preventDefault();
   filterListItems("all");
 });
 
+// Show Active Items
 showActiveLink.addEventListener("click", (event) => {
   event.preventDefault();
   filterListItems("active");
 });
 
+// Show Completed Items
 showCompletedLink.addEventListener("click", (event) => {
   event.preventDefault();
   filterListItems("completed");
@@ -306,9 +337,9 @@ showCompletedLink.addEventListener("click", (event) => {
 
 filterListItems("all");
 
-// remove items by clicking on the cross icon
 const listContainer = document.getElementById("list");
 
+// Remove List Item
 listContainer.addEventListener("click", (event) => {
   const target = event.target;
 
@@ -317,8 +348,11 @@ listContainer.addEventListener("click", (event) => {
     if (listItem) {
       listItem.remove();
       updateItemsLeftCount();
+      saveListItems();
+      toggleEmptyList(); // Call toggleEmptyList when a list item is removed
     }
   }
 });
 
-updateItemsLeftCount();
+loadListItems();
+

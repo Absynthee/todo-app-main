@@ -180,7 +180,7 @@ li {
   cursor: pointer;
   transition: box-shadow 1s;
   overflow-x: hidden;
-  padding-block: 10px;
+  /* padding-block: 10px; */
 }
 
 input[type="text"]:focus,
