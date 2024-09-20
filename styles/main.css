@@ -182,7 +182,32 @@ li {
   transition: box-shadow 1s;
   overflow-x: hidden;
   /* padding-block: 10px; */
+  transition: scale 0.2s;
+  
+  /* &:active,
+  &:focus {
+    scale: 1.05;
+    background-color: var(--dark-2);
+  } */
 }
+
+
+
+.box {
+  border: 3px solid #666;
+  background-color: #ddd;
+  border-radius: .5em;
+  padding: 10px;
+  cursor: move;
+}
+
+
+.box.over {
+  border: 3px dotted #666;
+}
+
+
+
 
 input[type="text"]:focus,
 input[type="text"]:hover {
